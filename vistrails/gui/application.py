@@ -209,7 +209,8 @@ class VistrailsApplicationSingleton(VistrailsApplicationInterface,
             self.processEvents()
             
         # self.vistrailsStartup.init()
-        self.package_manager.initialize_packages()
+        self.package_manager.initialize_packages(
+                report_missing_dependencies=not self.startup.first_run)
 
         # ugly workaround for configuration initialization order issue
         # If we go through the configuration too late,
@@ -220,7 +221,6 @@ class VistrailsApplicationSingleton(VistrailsApplicationInterface,
                 self.builderWindow.showMaximized()
             if self.temp_configuration.check('dbDefault'):
                 self.builderWindow.setDBDefault(True)
-        # self._python_environment = self.vistrailsStartup.get_python_environment()
 
         self._initialized = True
 
