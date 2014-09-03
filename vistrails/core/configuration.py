@@ -98,6 +98,7 @@ webRepositoryUser: Web repository username
 repositoryLocalPath: Local package repository directory
 repositoryHTTPURL: Remote package repository URL
 handlerDontAsk: Do not ask about extension handling at startup
+showInlineParameterWidgets: Show editable parameters inside modules
 """
 
 _documentation = """
@@ -402,6 +403,10 @@ outputDefaultSettings: ConfigurationObject
 
     One or more comma-separated key=value parameters
 
+showInlineParameterWidgets: Boolean
+
+    Show editable parameters inside modules
+
 """
 
 class ConfigType(object):
@@ -532,6 +537,7 @@ base_config = {
      ConfigField('showVariantErrors', True, bool, ConfigType.SHOW_HIDE),
      ConfigField('showDebugPopups', False, bool, ConfigType.SHOW_HIDE),
      ConfigField('showScrollbars', True, bool, ConfigType.SHOW_HIDE),
+     ConfigField('showInlineParameterWidgets', False, bool, ConfigType.SHOW_HIDE),
      ConfigFieldParent('shell',
         [ConfigField('fontFace', system.shell_font_face(), str),
          ConfigField('fontSize', system.shell_font_size(), int)]),
