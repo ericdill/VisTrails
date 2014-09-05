@@ -34,7 +34,8 @@
 ###############################################################################
 from PyQt4 import QtCore, QtGui
 
-from vistrails.core.configuration import get_vistrails_configuration
+from vistrails.core.configuration import get_vistrails_configuration, \
+                                         get_vistrails_persistent_configuration
 from vistrails.core.system import vistrails_root_directory, systemType
 from vistrails.core.utils import versions_increasing
 from vistrails.gui.common_widgets import QDockPushButton
@@ -80,13 +81,15 @@ class QModuleInfo(QtGui.QWidget, QVistrailsPaletteInterface):
         self.showTypesAction.setChecked(True)
         self.toolWindow().toolbar.insertAction(self.toolWindow().pinAction,
                                                self.showTypesAction)
-        self.showEditsAction = QtGui.QAction(QtGui.QIcon(os.path.join(vistrails_root_directory(),
-                             'gui/resources/images/pencil.png')),
-                                        "Show/hide edit widget toggle buttons",
-                                        None,
-                                        triggered=self.showEdits)
+        self.showEditsAction = QtGui.QAction(
+                 QtGui.QIcon(os.path.join(vistrails_root_directory(),
+                                          'gui/resources/images/pencil.png')),
+                 "Show/hide edit widget toggle buttons",
+                 None,
+                 triggered=self.showEdits)
         self.showEditsAction.setCheckable(True)
-        self.showEditsAction.setChecked(False)
+        self.showEditsAction.setChecked(
+            get_vistrails_configuration().check('showInlineParameterWidgets'))
         self.toolWindow().toolbar.insertAction(self.toolWindow().pinAction,
                                                self.showEditsAction)
 
@@ -100,6 +103,7 @@ class QModuleInfo(QtGui.QWidget, QVistrailsPaletteInterface):
 
     def showEdits(self, checked):
         get_vistrails_configuration().showInlineParameterWidgets = checked
+        get_vistrails_persistent_configuration().showInlineParameterWidgets = checked
         scene = self.controller.current_pipeline_scene
         scene.setupScene(self.controller.current_pipeline)
 
