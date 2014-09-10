@@ -32,10 +32,12 @@
 ## ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 ##
 ###############################################################################
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+import six
 from PyQt4 import QtCore, QtGui
 from itertools import izip
 import os
-import string
 
 from vistrails.core import debug
 from vistrails.core.modules.basic_modules import identifier as basic_identifier
@@ -207,11 +209,17 @@ class ParameterEntry(QtGui.QTreeWidgetItem):
         else:
             params = [None,] * len(self.port_spec.descriptors())
 
+        def strip_preceeding_lowercase(some_str):
+            for index, (u1, u2) in enumerate(zip(some_str, some_str.lower())):
+                if u1 != u2:
+                    return some_str[index:]
+            return ''
+
         for i, (psi, param) in enumerate(izip(self.port_spec.port_spec_items, 
                                               params)):
             if psi.entry_type is not None:
                 # !!only pull off the prefix!! options follow in camelcase
-                prefix_end = len(psi.entry_type.lstrip(string.lowercase))
+                prefix_end = len(strip_preceeding_lowercase(psi.entry_type))
                 if prefix_end == 0:
                     entry_type = psi.entry_type
                 else:
